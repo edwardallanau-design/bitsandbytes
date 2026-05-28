@@ -7,7 +7,9 @@
       "Bash(Get-ChildItem -Path \"d:\\\\Projects\\\\bitsandbyteswebsite\" -Force)",
       "Bash(Select-Object Name, Mode)",
       "Bash(Format-Table)",
-      "Bash(grep -v \"^\\\\.\\\\$\")"
+      "Bash(grep -v \"^\\\\.\\\\$\")",
+      "PowerShell(node --version)",
+      "PowerShell(npm --version)"
     ]
   }
 }

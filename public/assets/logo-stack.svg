@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 96" fill="none">
+  
+  <g fill="currentColor" transform="translate(76 0)">
+    <rect x="0" y="0" width="6" height="6"></rect>
+    <rect x="8" y="0" width="6" height="6"></rect>
+    <rect x="16" y="0" width="6" height="6"></rect>
+    <rect x="0" y="8" width="6" height="6"></rect>
+    <rect x="16" y="8" width="6" height="6"></rect>
+    <rect x="0" y="16" width="6" height="6"></rect>
+    <rect x="8" y="16" width="6" height="6"></rect>
+    <rect x="16" y="16" width="6" height="6"></rect>
+    <rect x="0" y="24" width="6" height="6"></rect>
+    <rect x="16" y="24" width="6" height="6"></rect>
+    <rect x="0" y="32" width="6" height="6"></rect>
+    <rect x="8" y="32" width="6" height="6"></rect>
+    <rect x="16" y="32" width="6" height="6"></rect>
+  </g>
+  <text x="100" y="68" font-family="Instrument Serif, Times New Roman, serif" font-size="22" font-style="italic" fill="currentColor" letter-spacing="-0.02em" text-anchor="middle">Bits &amp; Bytes</text>
+  <text x="100" y="88" font-family="JetBrains Mono, ui-monospace, monospace" font-size="9" fill="currentColor" letter-spacing="0.18em" text-anchor="middle" opacity="0.6">SOFTWARE · STUDIO</text>
+</svg>

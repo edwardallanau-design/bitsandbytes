@@ -1,235 +1,303 @@
-# Bits & Bytes — Design System
+# Payload Website Template
 
-A design system for **Bits & Bytes**, a startup software solutions company.
-Strict black-and-white theme with light/dark mode parity.
+This is the official [Payload Website Template](https://github.com/payloadcms/payload/blob/3.x/templates/website). Use it to power websites, blogs, or portfolios from small to enterprise. This repo includes a fully-working backend, enterprise-grade admin panel, and a beautifully designed, production-ready website.
 
-> **Status:** Bootstrapped from brief. No source codebase, Figma file, or
-> existing brand assets were provided — everything here is original work
-> grounded in the brief ("startup software solutions company, black and
-> white theme, light + dark mode"). Logos, illustrations, and UI kits are
-> all fresh creative output. Treat this as a **proposed** system; iterate
-> with the user before considering it final.
+This template is right for you if you are working on:
 
----
+- A personal or enterprise-grade website, blog, or portfolio
+- A content publishing platform with a fully featured publication workflow
+- Exploring the capabilities of Payload
 
-## 1. Brand Premise
+Core features:
 
-**Bits & Bytes** is a startup software solutions company. The name evokes
-the smallest units of digital information — the literal substrate of
-software. The brand leans into that:
+- [Pre-configured Payload Config](#how-it-works)
+- [Authentication](#users-authentication)
+- [Access Control](#access-control)
+- [Layout Builder](#layout-builder)
+- [Draft Preview](#draft-preview)
+- [Live Preview](#live-preview)
+- [On-demand Revalidation](#on-demand-revalidation)
+- [SEO](#seo)
+- [Search](#search)
+- [Redirects](#redirects)
+- [Jobs and Scheduled Publishing](#jobs-and-scheduled-publish)
+- [Website](#website)
 
-- **Editorial-engineering** as the core voice. Software is craft, and
-  craft writing is plain-spoken, exact, and a little bit serious.
-- **Strict black & white.** No accent color, no gradients. Contrast,
-  whitespace, and typography do all the heavy lifting. The system runs
-  in **light** mode (paper-white canvas, ink-black type) or **dark**
-  mode (true black canvas, off-white type) with full token parity.
-- **A "pixel grid" visual motif** — the smallest building block of an
-  image, a bit. Used sparingly, in the wordmark and as a structural
-  hairline pattern on hero surfaces.
-- **Monospace as a brand voice.** Labels, metadata, navigation chrome,
-  and small technical surfaces use JetBrains Mono. Body copy is Inter.
-  Headlines reach for Instrument Serif when the moment calls for weight.
+## Quick Start
 
-## 2. Products covered
+To spin up this example locally, follow these steps:
 
-Two surfaces ship with this system:
+### Clone
 
-- **Marketing website** (`ui_kits/website/`) — homepage, work index, work
-  detail, contact. The face the world sees.
-- **Web app** (`ui_kits/app/`) — the internal product surface: a project
-  workspace with a sidebar, timeline, and detail pane.
+If you have not done so already, you need to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
 
-## 3. Index
+Use the `create-payload-app` CLI to clone this template directly to your machine:
 
-```
-README.md                    ← you are here
-SKILL.md                     ← skill manifest (Claude Code compatible)
-colors_and_type.css          ← all design tokens (B&W ramp, type scale, semantic vars)
-fonts/                       ← Inter, Instrument Serif, JetBrains Mono
-assets/                      ← logos (SVG), favicons, brand marks
-preview/                     ← design system preview cards (rendered in DS tab)
-ui_kits/
-  website/                   ← marketing site UI kit
-    index.html               ← interactive demo
-    *.jsx                    ← components
-    README.md
-  app/                       ← product UI kit
-    index.html
-    *.jsx
-    README.md
+```bash
+pnpx create-payload-app my-project -t website
 ```
 
-## 4. Sources & inputs
+### Development
 
-- **Brief from user:** "Bits and Bytes : a startup software solutions
-  company. Black and white theme, can also switch with a dark and light
-  mode."
-- **No codebase, Figma file, or existing brand assets were provided.**
-  Everything in this system was generated from the brief.
-- **Fonts** — sourced from Google Fonts (free, OFL-licensed):
-  - [Inter](https://fonts.google.com/specimen/Inter)
-  - [Instrument Serif](https://fonts.google.com/specimen/Instrument+Serif)
-  - [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono)
+1. First [clone the repo](#clone) if you have not done so already
+1. `cd my-project && cp .env.example .env` to copy the example environment variables
+1. `pnpm install && pnpm dev` to install dependencies and start the dev server
+1. open `http://localhost:3000` to open the app in your browser
 
-  ⚠ **Substitution flag:** without a brand-specified type system, these
-  are educated picks. Swap freely once a real type direction lands.
+That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
 
----
+## How it works
 
-## 5. Content fundamentals
+The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
 
-> How copy is written. Tone, casing, point-of-view, the vibe.
+### Collections
 
-**Tone.** Plain-spoken. Exact. Low-key confident. The brand is technical
-without being smug, modern without being trendy. Sentences are short.
-Adverbs are rare. Marketing fluff ("revolutionary", "world-class",
-"seamless") is off-limits.
+See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
 
-**Voice.** First-person plural in marketing copy ("we"); second person
-when addressing the user ("you"). Avoid "our team" / "our experts" — say
-"we". Never "leverage", "synergize", "unlock" as verbs.
+- #### Users (Authentication)
 
-**Casing.** Sentence case for everything except the wordmark.
-- ✅ "Ship better software" — sentence case
-- ✅ "Recent work" — sentence case
-- ❌ "Ship Better Software" — title case is reserved for proper nouns
-- ❌ "SHIP BETTER SOFTWARE" — all caps is reserved for monospace eyebrow labels and tags
+  Users are auth-enabled collections that have access to the admin panel and unpublished content. See [Access Control](#access-control) for more details.
 
-**Eyebrow labels.** Small monospace text, ALL CAPS, letter-spaced.
-Examples: `01 — INDEX`, `CASE STUDY`, `CURRENTLY`, `READ TIME · 4 MIN`.
-This is the only place all caps appears.
+  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/3.x/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
 
-**Punctuation.** Em dashes for asides ("we ship software — the kind
-that ships"). Ampersand reserved for the wordmark and a small set of
-fixed phrases ("Bits & Bytes"). Oxford comma always.
+- #### Posts
 
-**Numbers.** Numerals over words for any quantity that could be data
-(`12 projects shipped`, not `twelve projects shipped`). Spell out
-zero through nine in prose.
+  Posts are used to generate blog posts, news articles, or any other type of content that is published over time. All posts are layout builder enabled so you can generate unique layouts for each post using layout-building blocks, see [Layout Builder](#layout-builder) for more details. Posts are also draft-enabled so you can preview them before publishing them to your website, see [Draft Preview](#draft-preview) for more details.
 
-**Emoji.** **Never.** Not even sparingly. The brand voice does not use
-emoji. If a glyph is needed, use a Unicode mark (→, —, •, §, ¶) or a
-proper SVG icon.
+- #### Pages
 
-**Examples (good).**
-- *"We design and build software for teams that care about the details."*
-- *"A studio that ships. Based in Brooklyn, working everywhere."*
-- *"Currently booking projects starting Q1 2026."*
-- *"We're eight engineers and designers. We work with one client at a time."*
+  All pages are layout builder enabled so you can generate unique layouts for each page using layout-building blocks, see [Layout Builder](#layout-builder) for more details. Pages are also draft-enabled so you can preview them before publishing them to your website, see [Draft Preview](#draft-preview) for more details.
 
-**Examples (bad — do not write like this).**
-- ❌ "🚀 Revolutionary AI-powered solutions for your business!"
-- ❌ "Unleash the power of Bits & Bytes today."
-- ❌ "Our world-class team of seasoned experts..."
+- #### Media
 
----
+  This is the uploads enabled collection used by pages, posts, and projects to contain media like images, videos, downloads, and other assets. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
 
-## 6. Visual foundations
+- #### Categories
 
-**Colors.** Pure grayscale. An 11-step ramp from `#FFFFFF` to `#000000`
-in light mode, mirrored in dark. Two semantic layers (`bg`, `surface`),
-three text levels (`fg-1` strongest → `fg-3` muted), one hairline
-border. **No color accent.** No gradients except a single utility
-"protection gradient" used to fade content under a sticky header.
+  A taxonomy used to group posts together. Categories can be nested inside of one another, for example "News > Technology". See the official [Payload Nested Docs Plugin](https://payloadcms.com/docs/plugins/nested-docs) for more details.
 
-**Type.** Three families, one each for serif display, sans body, and
-mono accent. Full type scale lives in `colors_and_type.css`. Display
-sizes are tracked tight (`-0.02em`); body text uses default tracking;
-mono labels are letter-spaced (`0.08em`) and small (11–13 px).
+### Globals
 
-**Spacing.** A 4-px base. Steps: 4, 8, 12, 16, 24, 32, 48, 64, 96, 128.
-We rely heavily on the larger end of the ramp — generous whitespace
-is part of the brand.
+See the [Globals](https://payloadcms.com/docs/configuration/globals) docs for details on how to extend this functionality.
 
-**Backgrounds.** No imagery as background by default. Hero surfaces
-optionally show a hairline pixel-grid pattern (1 px dots on a 32-px
-grid, at ~6% opacity). Full-bleed photography is allowed in case
-studies but rendered in true grayscale (`filter: grayscale(1)`).
+- `Header`
 
-**Animation.** Sparse and quiet.
-- Easing: `cubic-bezier(0.2, 0, 0, 1)` — confident ease-out.
-- Duration: 150 ms for state changes, 240 ms for layout, 400 ms for
-  page transitions.
-- No bounces, no springs, no overshoots. No parallax. No autoplay video.
+  The data required by the header on your front-end like nav links.
 
-**Hover states.** Text links: underline appears (or thickens). Buttons:
-the `fg`/`bg` of the button **inverts** — the primary is solid black,
-hovered it becomes solid white with a 1-px black border (and vice
-versa in dark mode). Cards: a 1-px border darkens by one step;
-no lift, no shadow change.
+- `Footer`
 
-**Press states.** A 50-ms `scale(0.98)` and a one-step darken of the
-fill. No ripple, no glow.
+  Same as above but for the footer of your site.
 
-**Borders.** Always 1 px, always a single hairline color (`--border`).
-Never thicker. Never dashed. Two corner radii: `4px` for small
-elements (chips, inputs), `0px` for cards and large surfaces. We
-**default to square corners**; rounding is the exception.
+## Access control
 
-**Shadows.** Effectively none. The system uses borders, not shadows,
-to separate surfaces. One exception: a faint `0 8px 32px rgba(0,0,0,0.08)`
-on floating menus and modals.
+Basic access control is setup to limit access to various content based based on publishing status.
 
-**Transparency / blur.** Sticky headers use `backdrop-filter: blur(12px)`
-with a `rgba(255,255,255,0.7)` (or dark equivalent) fill. Nowhere else.
+- `users`: Users can access the admin panel and create or edit content.
+- `posts`: Everyone can access published posts, but only users can create, update, or delete them.
+- `pages`: Everyone can access published pages, but only users can create, update, or delete them.
 
-**Imagery.** All photography is rendered in **grayscale**. Project work
-photography is shown true-grayscale via CSS filter; brand photography
-should be shot or selected with a high-contrast, slightly-grainy,
-documentary feel.
+For more details on how to extend this functionality, see the [Payload Access Control](https://payloadcms.com/docs/access-control/overview#access-control) docs.
 
-**Cards.** Square corners, 1-px hairline border, no shadow, no fill
-(transparent against `--bg`), generous internal padding (24–32 px).
+## Layout Builder
 
-**Layout rules.** Full-width hero, then a max-width container of
-1280 px for content, with a 12-column grid and 24-px gutters. Sticky
-header at 64 px tall. Footer always full-bleed.
+Create unique page layouts for any type of content using a powerful layout builder. This template comes pre-configured with the following layout building blocks:
 
----
+- Hero
+- Content
+- Media
+- Call To Action
+- Archive
 
-## 7. Iconography
+Each block is fully designed and built into the front-end website that comes with this template. See [Website](#website) for more details.
 
-**Approach.** Hairline, geometric, monoline. 1.5-px stroke,
-24×24 px viewbox, rounded line caps and joins, no fills. The
-visual language matches the typography: precise, restrained, technical.
+## Lexical editor
 
-**Source.** **Lucide** (lucide.dev) is the chosen icon set — its
-stroke and proportion match the system. Linked from CDN at runtime;
-no icons are bundled into `assets/`.
+A deep editorial experience that allows complete freedom to focus just on writing content without breaking out of the flow with support for Payload blocks, media, links and other features provided out of the box. See [Lexical](https://payloadcms.com/docs/rich-text/overview) docs.
 
-> ⚠ **Substitution flag:** with no codebase to harvest from, Lucide is
-> a pragmatic stand-in. If the brand later commits to a custom icon set,
-> drop it into `assets/icons/` and update this section.
+## Draft Preview
 
-**Custom marks.** The brand uses real PNG logo lockups —
-`assets/icon-black.png`, `assets/icon-white.png`,
-`assets/logo-light.png` (black mark on white), `assets/logo-dark.png`
-(white mark on black). The hexagonal `./b` icon and chunky modern-sans
-wordmark are part of the brand identity, NOT the icon set. The earlier
-SVG monograms in `assets/` are deprecated placeholders.
+All posts and pages are draft-enabled so you can preview them before publishing them to your website. To do this, these collections use [Versions](https://payloadcms.com/docs/configuration/collections#versions) with `drafts` set to `true`. This means that when you create a new post, project, or page, it will be saved as a draft and will not be visible on your website until you publish it. This also means that you can preview your draft before publishing it to your website. To do this, we automatically format a custom URL which redirects to your front-end to securely fetch the draft version of your content.
 
-> ⚠ **Open question:** the supplied wordmark uses a chunky rounded
-> display sans (Orbitron- or Eurostile-adjacent). The current type
-> system uses Inter for headlines instead. Confirm with the user
-> whether to adopt the wordmark's face for hero type, or keep
-> headlines in Inter and the wordmark image-only.
+Since the front-end of this template is statically generated, this also means that pages, posts, and projects will need to be regenerated as changes are made to published documents. To do this, we use an `afterChange` hook to regenerate the front-end when a document has changed and its `_status` is `published`.
 
-**Emoji.** Never used.
+For more details on how to extend this functionality, see the official [Draft Preview Example](https://github.com/payloadcms/payload/tree/3.x/examples/draft-preview).
 
-**Unicode glyphs.** Allowed sparingly in copy as typographic accents:
-em dash `—`, en dash `–`, bullet `•`, arrow `→`, section `§`. Not as
-icons.
+## Live preview
 
----
+In addition to draft previews you can also enable live preview to view your end resulting page as you're editing content with full support for SSR rendering. See [Live preview docs](https://payloadcms.com/docs/live-preview/overview) for more details.
 
-## 8. Caveats & follow-ups
+## On-demand Revalidation
 
-- **No source materials provided.** Logos, voice, palette, type, and
-  UI patterns are all proposed. Iterate with the user.
-- **Fonts are Google Fonts substitutions.** If a real type direction
-  is decided, replace the files in `fonts/` and re-run any embed
-  references.
-- **Single accent color absent by design.** If the brand later wants
-  a single accent, the spot to introduce it is `--accent` in
-  `colors_and_type.css` — the ramp is set up to receive it.
+We've added hooks to collections and globals so that all of your pages, posts, footer, or header changes will automatically be updated in the frontend via on-demand revalidation supported by Nextjs.
+
+> Note: if an image has been changed, for example it's been cropped, you will need to republish the page it's used on in order to be able to revalidate the Nextjs image cache.
+
+## SEO
+
+This template comes pre-configured with the official [Payload SEO Plugin](https://payloadcms.com/docs/plugins/seo) for complete SEO control from the admin panel. All SEO data is fully integrated into the front-end website that comes with this template. See [Website](#website) for more details.
+
+## Search
+
+This template also pre-configured with the official [Payload Search Plugin](https://payloadcms.com/docs/plugins/search) to showcase how SSR search features can easily be implemented into Next.js with Payload. See [Website](#website) for more details.
+
+## Redirects
+
+If you are migrating an existing site or moving content to a new URL, you can use the `redirects` collection to create a proper redirect from old URLs to new ones. This will ensure that proper request status codes are returned to search engines and that your users are not left with a broken link. This template comes pre-configured with the official [Payload Redirects Plugin](https://payloadcms.com/docs/plugins/redirects) for complete redirect control from the admin panel. All redirects are fully integrated into the front-end website that comes with this template. See [Website](#website) for more details.
+
+## Jobs and Scheduled Publish
+
+We have configured [Scheduled Publish](https://payloadcms.com/docs/versions/drafts#scheduled-publish) which uses the [jobs queue](https://payloadcms.com/docs/jobs-queue/jobs) in order to publish or unpublish your content on a scheduled time. The tasks are run on a cron schedule and can also be run as a separate instance if needed.
+
+> Note: When deployed on Vercel, depending on the plan tier, you may be limited to daily cron only.
+
+## Website
+
+This template includes a beautifully designed, production-ready front-end built with the [Next.js App Router](https://nextjs.org), served right alongside your Payload app in a instance. This makes it so that you can deploy both your backend and website where you need it.
+
+Core features:
+
+- [Next.js App Router](https://nextjs.org)
+- [TypeScript](https://www.typescriptlang.org)
+- [React Hook Form](https://react-hook-form.com)
+- [Payload Admin Bar](https://github.com/payloadcms/payload/tree/3.x/packages/admin-bar)
+- [TailwindCSS styling](https://tailwindcss.com/)
+- [shadcn/ui components](https://ui.shadcn.com/)
+- User Accounts and Authentication
+- Fully featured blog
+- Publication workflow
+- Dark mode
+- Pre-made layout building blocks
+- SEO
+- Search
+- Redirects
+- Live preview
+
+### Cache
+
+Although Next.js includes a robust set of caching strategies out of the box, Payload Cloud proxies and caches all files through Cloudflare using the [Official Cloud Plugin](https://www.npmjs.com/package/@payloadcms/payload-cloud). This means that Next.js caching is not needed and is disabled by default. If you are hosting your app outside of Payload Cloud, you can easily reenable the Next.js caching mechanisms by removing the `no-store` directive from all fetch requests in `./src/app/_api` and then removing all instances of `export const dynamic = 'force-dynamic'` from pages files, such as `./src/app/(pages)/[slug]/page.tsx`. For more details, see the official [Next.js Caching Docs](https://nextjs.org/docs/app/building-your-application/caching).
+
+## Development
+
+To spin up this example locally, follow the [Quick Start](#quick-start). Then [Seed](#seed) the database with a few pages, posts, and projects.
+
+### Working with Postgres
+
+Postgres and other SQL-based databases follow a strict schema for managing your data. In comparison to our MongoDB adapter, this means that there's a few extra steps to working with Postgres.
+
+Note that often times when making big schema changes you can run the risk of losing data if you're not manually migrating it.
+
+#### Local development
+
+Ideally we recommend running a local copy of your database so that schema updates are as fast as possible. By default the Postgres adapter has `push: true` for development environments. This will let you add, modify and remove fields and collections without needing to run any data migrations.
+
+If your database is pointed to production you will want to set `push: false` otherwise you will risk losing data or having your migrations out of sync.
+
+#### Migrations
+
+[Migrations](https://payloadcms.com/docs/database/migrations) are essentially SQL code versions that keeps track of your schema. When deploy with Postgres you will need to make sure you create and then run your migrations.
+
+Locally create a migration
+
+```bash
+pnpm payload migrate:create
+```
+
+This creates the migration files you will need to push alongside with your new configuration.
+
+On the server after building and before running `pnpm start` you will want to run your migrations
+
+```bash
+pnpm payload migrate
+```
+
+This command will check for any migrations that have not yet been run and try to run them and it will keep a record of migrations that have been run in the database.
+
+### Docker
+
+Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
+
+1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
+1. Next run `docker-compose up`
+1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
+
+That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
+
+### Seed
+
+To seed the database with a few pages, posts, and projects you can click the 'seed database' link from the admin panel.
+
+The seed script will also create a demo user for demonstration purposes only:
+
+- Demo Author
+  - Email: `demo-author@payloadcms.com`
+  - Password: `password`
+
+> NOTICE: seeding the database is destructive because it drops your current database to populate a fresh one from the seed template. Only run this command if you are starting a new project or can afford to lose your current data.
+
+## Production
+
+To run Payload in production, you need to build and start the Admin panel. To do so, follow these steps:
+
+1. Invoke the `next build` script by running `pnpm build` or `npm run build` in your project root. This creates a `.next` directory with a production-ready admin bundle.
+1. Finally run `pnpm start` or `npm run start` to run Node in production and serve Payload from the `.build` directory.
+1. When you're ready to go live, see Deployment below for more details.
+
+### Deploying to Vercel
+
+This template can also be deployed to Vercel for free. You can get started by choosing the Vercel DB adapter during the setup of the template or by manually installing and configuring it:
+
+```bash
+pnpm add @payloadcms/db-vercel-postgres
+```
+
+```ts
+// payload.config.ts
+import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
+
+export default buildConfig({
+  // ...
+  db: vercelPostgresAdapter({
+    pool: {
+      connectionString: process.env.POSTGRES_URL || '',
+    },
+  }),
+  // ...
+```
+
+We also support Vercel's blob storage:
+
+```bash
+pnpm add @payloadcms/storage-vercel-blob
+```
+
+```ts
+// payload.config.ts
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
+
+export default buildConfig({
+  // ...
+  plugins: [
+    vercelBlobStorage({
+      collections: {
+        [Media.slug]: true,
+      },
+      token: process.env.BLOB_READ_WRITE_TOKEN || '',
+    }),
+  ],
+  // ...
+```
+
+There is also a simplified [one click deploy](https://github.com/payloadcms/payload/tree/3.x/templates/with-vercel-postgres) to Vercel should you need it.
+
+### Self-hosting
+
+Before deploying your app, you need to:
+
+1. Ensure your app builds and serves in production. See [Production](#production) for more details.
+2. You can then deploy Payload as you would any other Node.js or Next.js application either directly on a VPS, DigitalOcean's Apps Platform, via Coolify or more. More guides coming soon.
+
+You can also deploy your app manually, check out the [deployment documentation](https://payloadcms.com/docs/production/deployment) for full details.
+
+## Questions
+
+If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
