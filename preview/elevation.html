@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8"/>
+<title>Elevation</title>
+<link rel="stylesheet" href="_card.css"/>
+<style>
+  .row-e { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .item { background: var(--bg-elev); padding: 24px 20px 32px 20px; }
+  .box { width: 100%; height: 80px; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); letter-spacing: 0.06em; }
+  .lbl { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; color: var(--fg-2); text-transform: uppercase; margin-top: 10px; }
+  .desc { font-size: 11px; color: var(--fg-3); margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="spread">
+    <span class="eyebrow">Elevation</span>
+    <span class="eyebrow">Borders, not shadows</span>
+  </div>
+  <div class="row-e">
+    <div class="item">
+      <div class="box">no shadow</div>
+      <div class="lbl">flat</div>
+      <div class="desc">Default. Surfaces sit on the page.</div>
+    </div>
+    <div class="item">
+      <div class="box" style="box-shadow: 0 8px 32px rgba(0,0,0,0.08);">shadow-pop</div>
+      <div class="lbl">shadow-pop</div>
+      <div class="desc">Floating menus, popovers.</div>
+    </div>
+    <div class="item">
+      <div class="box" style="box-shadow: 0 16px 48px rgba(0,0,0,0.16);">shadow-pop-strong</div>
+      <div class="lbl">shadow-pop-strong</div>
+      <div class="desc">Modals only.</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

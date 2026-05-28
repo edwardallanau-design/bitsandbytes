@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Bits &amp; Bytes — Software Studio</title>
+<link rel="icon" href="../../assets/favicon.svg"/>
+<link rel="stylesheet" href="site.css"/>
+<link rel="stylesheet" href="components.css"/>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
+<script src="useInView.js"></script>
+
+<script type="text/babel" src="Header.jsx"></script>
+<script type="text/babel" src="Footer.jsx"></script>
+<script type="text/babel" src="Hero.jsx"></script>
+<script type="text/babel" src="Sections.jsx"></script>
+<script type="text/babel" src="WorkGrid.jsx"></script>
+<script type="text/babel" src="Manifesto.jsx"></script>
+<script type="text/babel" src="ContactForm.jsx"></script>
+<script type="text/babel" src="Journal.jsx"></script>
+
+<script type="text/babel">
+
+
+function App() {
+  const [theme, setTheme] = React.useState(() => {
+    // Load theme from localStorage, default to "dark"
+    return localStorage.getItem("theme") || "dark";
+  });
+  const [path, setPath] = React.useState(() => {
+    // Restore last route on refresh
+    return sessionStorage.getItem("path") || "/";
+  });
+  const [isInitialLoad, setIsInitialLoad] = React.useState(true);
+
+  React.useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.setProperty('--logo-size', '64px');
+    // Save theme to localStorage
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  // Persist scroll position so refresh doesn't jump to top
+  React.useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    // Restore scroll for current path on initial mount
+    const saved = parseInt(sessionStorage.getItem("scroll:" + path) || "0", 10);
+    if (saved > 0) {
+      // Wait a tick for content to render
+      requestAnimationFrame(() => window.scrollTo({ top: saved, behavior: "instant" }));
+    }
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        sessionStorage.setItem("scroll:" + path, String(window.scrollY));
+        ticking = false;
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [path]);
+
+  React.useEffect(() => {
+    sessionStorage.setItem("path", path);
+  }, [path]);
+
+  React.useEffect(() => {
+    // Re-render Lucide icons after each route/state change.
+    const t = setTimeout(() => window.lucide && window.lucide.createIcons(), 50);
+    return () => clearTimeout(t);
+  });
+
+  const onNav = (p) => {
+    setPath(p);
+    setIsInitialLoad(false);
+    window.scrollTo({ top: 0, behavior: "instant" });
+  };
+
+  return (
+    <>
+      <Header
+        theme={theme}
+        onToggleTheme={() => setTheme(theme === "light" ? "dark" : "light")}
+        currentPath={path}
+        onNav={onNav} />
+      
+      <main key={path} style={{ animation: path !== "/" || !isInitialLoad ? "slideInContent 0.5s ease-out" : "none" }}>
+        {path === "/" && <>
+          <Hero onNav={onNav} />
+          <TrustedBy />
+          <Process />
+          <WorkGrid onItem={(it) => onNav("/work/" + it.id)} limit={2} onViewAll={() => onNav("/work")} />
+          <Capabilities />
+          <Pricing onNav={onNav} />
+          <Testimonial />
+          <BookCall onNav={onNav} />
+          <Referral onNav={onNav} />
+        </>}
+        {path === "/work" && <>
+          <section className="page-header">
+            <div className="container">
+              <h1 className="page-header-title">All work.</h1>
+              <p className="page-header-sub">Every project we&rsquo;ve shipped, start to finish. No half-measures, no shortcuts.</p>
+            </div>
+          </section>
+          <WorkGrid onItem={(it) => onNav("/work/" + it.id)} pageMode />
+        </>}
+        {path === "/about" && <>
+          <section className="page-header">
+            <div className="container">
+              <h1 className="page-header-title">Small team,<br/>big results.</h1>
+              <p className="page-header-sub">Senior talent only. No juniors, no account managers — just the people who do the work, talking directly to you.</p>
+            </div>
+          </section>
+          <Manifesto />
+        </>}
+        {path === "/journal" && <>
+          <section className="page-header">
+            <div className="container">
+              <h1 className="page-header-title">Notes from the studio.</h1>
+              <p className="page-header-sub">Updated when we have something worth saying.</p>
+            </div>
+          </section>
+          <Journal onNav={onNav} />
+        </>}
+        {path.startsWith("/journal/") && <PostView id={path.replace("/journal/", "")} onNav={onNav} />}
+        {path === "/contact" && <>
+          <section className="page-header">
+            <div className="container">
+              <h1 className="page-header-title">Let&rsquo;s build something<br />great together.</h1>
+              <p className="page-header-sub">Book a discovery call or send us a project brief. We read every brief ourselves. You&rsquo;ll hear back directly.</p>
+            </div>
+          </section>
+          <ContactForm />
+        </>}
+        {path.startsWith("/work/") && (() => {
+          const w = window.WORK.find((x) => x.id === path.split("/").pop());
+          if (!w) return <section className="tight"><div className="container">Not found.</div></section>;
+          return (
+            <section className="tight">
+              <div className="container" style={{ maxWidth: 760 }}>
+                <span className="eyebrow">Case study &mdash; {w.num}</span>
+                <h1 className="section-title" style={{ marginTop: 16 }}>{w.title}</h1>
+                <p className="section-sub">{w.summary}</p>
+                <div style={{ marginTop: 32, display: "flex", gap: 24, flexWrap: "wrap" }}>
+                  <div><div className="eyebrow">Client</div><div style={{ marginTop: 4, fontSize: 16 }}>{w.client}</div></div>
+                  <div><div className="eyebrow">Year</div><div style={{ marginTop: 4, fontSize: 16 }}>{w.year}</div></div>
+                  <div><div className="eyebrow">Tags</div><div style={{ marginTop: 4, fontSize: 16 }}>{w.tags.join(" · ")}</div></div>
+                </div>
+                <div style={{ marginTop: 56, padding: 64, border: "1px solid var(--border)", textAlign: "center", color: "var(--fg-3)" }}>
+                  Case-study body would live here.
+                </div>
+                <button className="btn btn-secondary" style={{ marginTop: 32 }} onClick={() => onNav("/work")}>
+                  &larr; Back to work
+                </button>
+              </div>
+            </section>);
+
+        })()}
+      </main>
+      <Footer theme={theme} />
+    </>);
+
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+
+<style>
+  .page-head { padding: 64px 0 48px 0; border-bottom: 1px solid var(--border); }
+  .page-head h1 { letter-spacing: -0.035em; margin-top: 0; font-weight: 700; }
+  
+  @keyframes slideInContent {
+    from {
+      opacity: 0;
+      transform: translateX(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+</style>
+</body>
+</html>

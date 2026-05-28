@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Bits &amp; Bytes — Studio</title>
+<link rel="icon" href="../../assets/favicon.svg"/>
+<link rel="stylesheet" href="app.css"/>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+
+<script type="text/babel" src="Sidebar.jsx"></script>
+<script type="text/babel" src="Toolbar.jsx"></script>
+<script type="text/babel" src="Timeline.jsx"></script>
+<script type="text/babel" src="DetailPane.jsx"></script>
+
+<script type="text/babel">
+function App() {
+  const [theme, setTheme] = React.useState("light");
+  const [activeNav, setActiveNav] = React.useState("today");
+  const [activeTab, setActiveTab] = React.useState("timeline");
+  const [activeEntry, setActiveEntry] = React.useState(window.SAMPLE_ENTRIES[0]);
+
+  React.useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+  }, [theme]);
+
+  React.useEffect(() => {
+    const t = setTimeout(() => window.lucide && window.lucide.createIcons(), 30);
+    return () => clearTimeout(t);
+  });
+
+  const tabs = [
+    { id: "timeline", label: "Timeline" },
+    { id: "people", label: "People" },
+    { id: "files", label: "Files" },
+    { id: "calendar", label: "Calendar" },
+  ];
+
+  const onNew = () => {
+    const e = {
+      id: "e" + Date.now(),
+      day: "Today",
+      date: "May 9",
+      meta: "Friday · Wk 19",
+      time: new Date().toTimeString().slice(0,5),
+      title: "New entry — untitled",
+      body: "Click to start writing…",
+      tags: ["Studio"],
+      project: "Studio",
+    };
+    if (window.__timelineAdd) window.__timelineAdd(e);
+    setActiveEntry(e);
+  };
+
+  const titleMap = {
+    today: { eb: "View · 01", title: "Today" },
+    inbox: { eb: "View · 02", title: "Inbox" },
+    search: { eb: "View · 03", title: "Search" },
+    voltline: { eb: "Project · 01", title: "Voltline" },
+    field: { eb: "Project · 02", title: "Field" },
+    monogram: { eb: "Project · 03", title: "Monogram" },
+    halftone: { eb: "Project · 04", title: "Halftone" },
+    settings: { eb: "App", title: "Settings" },
+    help: { eb: "App", title: "Help & feedback" },
+  };
+  const head = titleMap[activeNav] || titleMap.today;
+
+  return (
+    <div className="app-shell">
+      <Sidebar
+        activeId={activeNav}
+        onSelect={setActiveNav}
+        theme={theme}
+        onToggleTheme={() => setTheme(theme === "light" ? "dark" : "light")}
+      />
+      <div className="main-pane">
+        <Toolbar eyebrow={head.eb} title={head.title} onNew={onNew}/>
+        <Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab}/>
+        {activeTab === "timeline" && <Timeline activeId={activeEntry?.id} onSelect={setActiveEntry}/>}
+        {activeTab !== "timeline" && (
+          <div className="empty">
+            The {tabs.find(t => t.id === activeTab).label.toLowerCase()} tab would render here.
+          </div>
+        )}
+      </div>
+      <DetailPane entry={activeEntry}/>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>

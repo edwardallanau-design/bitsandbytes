@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Bits &amp; Bytes — Software Studio</title>
+<link rel="icon" href="../../assets/favicon.svg"/>
+<link rel="stylesheet" href="site.css"/>
+<link rel="stylesheet" href="components.css"/>
+<style>
+  /* ===== Print-friendly overrides ===== */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    animation: none !important;
+    transition: none !important;
+  }
+  /* Hide the hero starfield canvas — won't animate in print */
+  .hero-canvas { display: none !important; }
+  /* Hide the theme toggle */
+  .theme-toggle { display: none !important; }
+  /* Force light theme for better print contrast */
+  :root { color-scheme: light; }
+  html, body { background: #fff !important; color: #000 !important; }
+
+  @page {
+    size: A4 portrait;
+    margin: 14mm 12mm;
+  }
+  @media print {
+    html, body { background: #fff !important; }
+    body { font-size: 11pt; }
+    /* Sticky header becomes static */
+    .site-header {
+      position: static !important;
+      backdrop-filter: none !important;
+    }
+    /* Break long sections across pages */
+    section { break-inside: avoid-page; }
+    .hero, .trusted, .process, .work-section, .capabilities, .stats, .pricing, .testimonial, .manifesto, .book-call, .referral, .site-footer {
+      break-after: page;
+    }
+    /* Trim hero title size for print */
+    .hero-title { font-size: 48pt !important; line-height: 1.1 !important; }
+    .section-title { font-size: 24pt !important; }
+    /* Remove hover effects */
+    a:hover, button:hover, .nav-item:hover { opacity: 1 !important; color: inherit !important; }
+    /* Prevent cards from breaking awkwardly */
+    .process-card, .work-card, .tier, .team-card { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+
+<script type="text/babel" src="Header.jsx"></script>
+<script type="text/babel" src="Footer.jsx"></script>
+<script type="text/babel" src="Hero.jsx"></script>
+<script type="text/babel" src="Sections.jsx"></script>
+<script type="text/babel" src="WorkGrid.jsx"></script>
+<script type="text/babel" src="Manifesto.jsx"></script>
+<script type="text/babel" src="ContactForm.jsx"></script>
+
+<script type="text/babel">
+function App() {
+  const [theme, setTheme] = React.useState("dark");
+  const [path, setPath] = React.useState("/");
+
+  React.useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+  }, [theme]);
+
+  React.useEffect(() => {
+    // Re-render Lucide icons after each route/state change.
+    const t = setTimeout(() => window.lucide && window.lucide.createIcons(), 50);
+    return () => clearTimeout(t);
+  });
+
+  const onNav = (p) => {
+    setPath(p);
+    window.scrollTo({ top: 0, behavior: "instant" });
+  };
+
+  return (
+    <>
+      <Header
+        theme={theme}
+        onToggleTheme={() => setTheme(theme === "light" ? "dark" : "light")}
+        currentPath={path}
+        onNav={onNav}
+      />
+      <main>
+        {path === "/" && <>
+          <Hero onNav={onNav} />
+          <TrustedBy />
+          <Process />
+          <WorkGrid onItem={(it) => onNav("/work/" + it.id)} />
+          <Capabilities />
+          <Stats />
+          <Pricing onNav={onNav} />
+          <Testimonial />
+          <Manifesto />
+          <BookCall onNav={onNav} />
+          <Referral onNav={onNav} />
+        </>}
+        {path === "/work" && <>
+          <section className="page-head">
+            <div className="container">
+              <span className="eyebrow">Page &mdash; 02</span>
+              <h1 className="section-title" style={{marginTop: 16}}>Work</h1>
+              <p className="section-sub">A small portfolio. We work with one client at a time, so the list grows slowly.</p>
+            </div>
+          </section>
+          <WorkGrid onItem={(it) => onNav("/work/" + it.id)} />
+        </>}
+        {path === "/about" && <>
+          <section className="page-head">
+            <div className="container">
+              <span className="eyebrow">Page &mdash; 03</span>
+              <h1 className="section-title" style={{marginTop: 16}}>About</h1>
+              <p className="section-sub">A studio that ships. Eight engineers and designers, working from Brooklyn.</p>
+            </div>
+          </section>
+          <Manifesto />
+        </>}
+        {path === "/journal" && <>
+          <section className="page-head">
+            <div className="container">
+              <span className="eyebrow">Page &mdash; 04</span>
+              <h1 className="section-title" style={{marginTop: 16}}>Journal</h1>
+              <p className="section-sub">Notes from the studio. Updated when we have something worth saying.</p>
+            </div>
+          </section>
+          <section className="tight">
+            <div className="container">
+              <p style={{color: "var(--fg-3)"}}>(Empty for now &mdash; we&rsquo;ll write something soon.)</p>
+            </div>
+          </section>
+        </>}
+        {path === "/contact" && <ContactForm />}
+        {path.startsWith("/work/") && (() => {
+          const w = window.WORK.find(x => x.id === path.split("/").pop());
+          if (!w) return <section className="tight"><div className="container">Not found.</div></section>;
+          return (
+            <section className="tight">
+              <div className="container" style={{maxWidth: 760}}>
+                <span className="eyebrow">Case study &mdash; {w.num}</span>
+                <h1 className="section-title" style={{marginTop: 16}}>{w.title}</h1>
+                <p className="section-sub">{w.summary}</p>
+                <div style={{marginTop: 32, display: "flex", gap: 24, flexWrap: "wrap"}}>
+                  <div><div className="eyebrow">Client</div><div style={{marginTop: 4, fontSize: 16}}>{w.client}</div></div>
+                  <div><div className="eyebrow">Year</div><div style={{marginTop: 4, fontSize: 16}}>{w.year}</div></div>
+                  <div><div className="eyebrow">Tags</div><div style={{marginTop: 4, fontSize: 16}}>{w.tags.join(" · ")}</div></div>
+                </div>
+                <div style={{marginTop: 56, padding: 64, border: "1px solid var(--border)", textAlign: "center", color: "var(--fg-3)"}}>
+                  Case-study body would live here.
+                </div>
+                <button className="btn btn-secondary" style={{marginTop: 32}} onClick={() => onNav("/work")}>
+                  &larr; Back to work
+                </button>
+              </div>
+            </section>
+          );
+        })()}
+      </main>
+      <Footer />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+
+// Auto-print once React render + fonts are ready
+(async () => {
+  try { if (document.fonts && document.fonts.ready) await document.fonts.ready; } catch (e) {}
+  await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  await new Promise(r => setTimeout(r, 800));
+  window.print();
+})();
+</script>
+
+<style>
+  .page-head { padding: 96px 0 48px 0; border-bottom: 1px solid var(--border); }
+</style>
+</body>
+</html>

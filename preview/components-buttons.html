@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8"/>
+<title>Buttons</title>
+<link rel="stylesheet" href="_card.css"/>
+<style>
+  .btn { font-family: var(--font-sans); font-size: 13px; font-weight: 500; padding: 10px 16px; border: 1px solid var(--fg-1); background: var(--fg-1); color: var(--bg); cursor: pointer; line-height: 1; transition: all 150ms cubic-bezier(0.2,0,0,1); }
+  .btn:hover { background: var(--bg); color: var(--fg-1); }
+  .btn.secondary { background: transparent; color: var(--fg-1); }
+  .btn.secondary:hover { background: var(--fg-1); color: var(--bg); }
+  .btn.ghost { background: transparent; color: var(--fg-1); border-color: transparent; }
+  .btn.ghost:hover { background: var(--fill-2); }
+  .btn.sm { font-size: 12px; padding: 7px 12px; }
+  .btn.lg { font-size: 14px; padding: 14px 22px; }
+  .row-b { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .grp { display: flex; flex-direction: column; gap: 8px; }
+  .lbl { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; color: var(--fg-3); text-transform: uppercase; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="spread">
+    <span class="eyebrow">Buttons</span>
+    <span class="eyebrow">primary · secondary · ghost</span>
+  </div>
+  <div class="grp"><div class="lbl">Default</div><div class="row-b">
+    <button class="btn">Get in touch</button>
+    <button class="btn secondary">Read more</button>
+    <button class="btn ghost">Cancel</button>
+  </div></div>
+  <div class="grp"><div class="lbl">Sizes</div><div class="row-b">
+    <button class="btn sm">Small</button>
+    <button class="btn">Default</button>
+    <button class="btn lg">Large</button>
+  </div></div>
+</div>
+</body>
+</html>

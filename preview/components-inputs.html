@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8"/>
+<title>Inputs</title>
+<link rel="stylesheet" href="_card.css"/>
+<style>
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .lbl { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; color: var(--fg-3); text-transform: uppercase; }
+  .input { font-family: var(--font-sans); font-size: 14px; padding: 10px 12px; border: 1px solid var(--border); background: var(--bg); color: var(--fg-1); border-radius: 4px; outline: none; }
+  .input:focus { border-color: var(--fg-1); }
+  textarea.input { resize: none; height: 60px; }
+  .hint { font-size: 11px; color: var(--fg-3); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="spread">
+    <span class="eyebrow">Form inputs</span>
+    <span class="eyebrow">text · email · textarea</span>
+  </div>
+  <div class="grid">
+    <div class="field"><span class="lbl">Name</span><input class="input" value="Theo Bennett"/></div>
+    <div class="field"><span class="lbl">Email</span><input class="input" placeholder="hello@example.com"/></div>
+  </div>
+  <div class="field"><span class="lbl">What are you working on?</span><textarea class="input" placeholder="A few sentences is plenty."></textarea><span class="hint">Optional. We read every message.</span></div>
+</div>
+</body>
+</html>
