@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { Moon, Sun } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
@@ -12,23 +13,6 @@ const NAV_ITEMS = [
   { num: '04', label: 'Journal', href: '/journal' },
   { num: '05', label: 'Contact', href: '/contact' },
 ]
-
-function SunIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="4" />
-      <path d="M12 2v2M12 20v2m-7.07-14.07 1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2m-4.34 5.66-1.41 1.41M6.34 6.34 4.93 4.93" />
-    </svg>
-  )
-}
-
-function MoonIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-    </svg>
-  )
-}
 
 export function SiteHeader() {
   const pathname = usePathname()
@@ -85,7 +69,7 @@ export function SiteHeader() {
               onClick={toggleTheme}
               aria-label="Toggle theme"
             >
-              {theme === 'light' ? <MoonIcon /> : <SunIcon />}
+              {theme === 'light' ? <Moon size={16} strokeWidth={1.8} /> : <Sun size={16} strokeWidth={1.8} />}
             </button>
             <button
               className="mobile-menu-btn"
@@ -126,7 +110,7 @@ export function SiteHeader() {
             onClick={toggleTheme}
             aria-label="Toggle theme"
           >
-            {theme === 'light' ? <MoonIcon /> : <SunIcon />}
+            {theme === 'light' ? <Moon size={16} strokeWidth={1.8} /> : <Sun size={16} strokeWidth={1.8} />}
             <span style={{ marginLeft: 10, fontSize: 13, fontFamily: 'var(--font-mono)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
               {theme === 'light' ? 'Dark mode' : 'Light mode'}
             </span>

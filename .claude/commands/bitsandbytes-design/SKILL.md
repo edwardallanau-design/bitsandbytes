@@ -4,9 +4,9 @@ description: Use this skill to generate well-branded interfaces and assets for B
 user-invocable: true
 ---
 
-Read the README.md file within this skill, and explore the other available files.
+Read the README.md file at the project root, and explore the other available files.
 
-If creating visual artifacts (slides, mocks, throwaway prototypes, etc.), copy assets out of `assets/` and create static HTML files for the user to view. Reference `colors_and_type.css` for tokens; the system supports light and dark themes via `[data-theme="light"|"dark"]` on `<html>`.
+If creating visual artifacts (slides, mocks, throwaway prototypes, etc.), copy assets out of `public/assets/` and create static HTML files for the user to view. Reference `src/styles/tokens.css` for tokens; the system supports light and dark themes via `[data-theme="light"|"dark"]` on `<html>`.
 
 If working on production code, copy assets and read the rules here to become an expert in designing with this brand.
 
@@ -14,6 +14,6 @@ If the user invokes this skill without any other guidance, ask them what they wa
 
 Key files to read first:
 - `README.md` — full system: voice, content fundamentals, visual foundations, iconography
-- `colors_and_type.css` — the canonical token file
-- `assets/` — real logo files (icon-black/white.png, logo-light/dark.png)
+- `src/styles/tokens.css` — the canonical token file
+- `public/assets/` — real logo files (icon-black/white.png, logo-light/dark.png)
 - `ui_kits/website/` and `ui_kits/app/` — reference UIs to mirror

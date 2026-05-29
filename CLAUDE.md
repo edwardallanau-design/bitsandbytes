@@ -71,8 +71,13 @@ src/
 │   ├── work.ts              ← static WORK array (migrate to Payload later)
 │   └── posts.ts             ← static POSTS array (migrate to Payload later)
 ├── hooks/
-│   └── useInView.ts         ← IntersectionObserver hook for scroll animations
-└── payload.config.ts        ← Payload configuration
+│   ├── useInView.ts          ← IntersectionObserver hook for scroll animations
+│   └── useFetchPayload.ts    ← client-side Payload REST hook (for dynamic client components)
+├── styles/
+│   ├── tokens.css            ← design tokens (source of truth)
+│   ├── site.css              ← layout, containers, button primitives
+│   └── components.css        ← per-component styles
+└── payload.config.ts         ← Payload configuration
 ```
 
 ### Payload Collections
@@ -109,16 +114,16 @@ Frontend pages currently use static data from `src/data/work.ts` and `src/data/p
 No Tailwind. All styling via plain CSS imported in `src/app/(frontend)/globals.css`:
 
 ```css
-@import '../../../colors_and_type.css';       /* design tokens */
-@import '../../../ui_kits/website/site.css';  /* layout, containers, button primitives */
-@import '../../../ui_kits/website/components.css'; /* per-component styles */
+@import '../../styles/tokens.css';     /* design tokens */
+@import '../../styles/site.css';       /* layout, containers, button primitives */
+@import '../../styles/components.css'; /* per-component styles */
 ```
 
-The `ui_kits/website/` and `ui_kits/app/` directories contain the original static prototype — kept as reference, excluded from TypeScript compilation.
+All CSS lives in `src/styles/`. Do not create CSS outside this directory.
 
 ### Design Token Source of Truth
 
-**`colors_and_type.css`** is the canonical token file. Never hardcode color, spacing, or type values:
+**`src/styles/tokens.css`** is the canonical token file. Never hardcode color, spacing, or type values:
 - Colors: `--gray-0` (black) through `--gray-10` (white), plus semantic aliases (`--bg`, `--fg-1`, `--fg-2`, `--fg-3`, `--border`)
 - Spacing: `--s-1` (4px) through `--s-10` (128px)
 - Type: `--font-display` (Instrument Serif), `--font-body` (Inter), `--font-mono` (JetBrains Mono)
@@ -177,7 +182,7 @@ const { docs } = await payload.find({ collection: 'projects', where: { featured:
 
 1. Create `src/components/ComponentName/index.tsx`
 2. Add `'use client'` if it uses hooks or browser APIs
-3. Add styles to `ui_kits/website/components.css` using only existing CSS variables
+3. Add styles to `src/styles/components.css` using only existing CSS variables
 4. Import in the relevant page under `src/app/(frontend)/`
 
 ## Adding Payload Collections
@@ -186,6 +191,11 @@ const { docs } = await payload.find({ collection: 'projects', where: { featured:
 2. Use named export: `export const CollectionName: CollectionConfig = { ... }`
 3. Add to `collections` array in `src/payload.config.ts`
 4. Run `npm run generate:types` to update `src/payload-types.ts`
+
+## Hooks
+
+- `useInView` — scroll-triggered CSS animations (client components only)
+- `useFetchPayload<T>(endpoint)` — client-side Payload REST fetches; prefer the Payload local API (`payload.find(...)`) in server components instead
 
 ## Voice & Copy
 

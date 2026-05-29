@@ -1,6 +1,4 @@
-/* Marketing site shared styles. Layered on top of colors_and_type.css. */
-
-@import url("../../colors_and_type.css");
+/* Marketing site shared styles. Layered on top of tokens.css. */
 
 * { box-sizing: border-box; }
 
