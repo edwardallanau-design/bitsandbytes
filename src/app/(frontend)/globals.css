@@ -1,6 +1,6 @@
-@import '../../../colors_and_type.css';
-@import '../../../ui_kits/website/site.css';
-@import '../../../ui_kits/website/components.css';
+@import '../../styles/tokens.css';
+@import '../../styles/site.css';
+@import '../../styles/components.css';
 
 /* Flash-of-unstyled-content prevention — theme is set by InitTheme before paint */
 html {

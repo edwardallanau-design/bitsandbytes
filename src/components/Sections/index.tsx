@@ -94,13 +94,14 @@ function ProcessCard({ step }: { step: { n: string; tag: string; h: string; b: s
   )
 }
 
+const STEPS = [
+  { n: '1', tag: 'Discovery', h: 'Quick Call', b: '30-minute chat to understand your goals, timeline, and success criteria.', mockup: 'call' },
+  { n: '2', tag: 'Collaboration', h: 'Direct Access', b: 'Real-time updates via a dedicated Slack channel. No middlemen.', mockup: 'slack' },
+  { n: '3', tag: 'Delivery', h: 'Launch Fast', b: 'Design, build, and deploy. Most projects go live in under 48 hours.', mockup: 'deploy' },
+]
+
 export function Process() {
   const ref = useInView()
-  const steps = [
-    { n: '1', tag: 'Discovery', h: 'Quick Call', b: '30-minute chat to understand your goals, timeline, and success criteria.', mockup: 'call' },
-    { n: '2', tag: 'Collaboration', h: 'Direct Access', b: 'Real-time updates via a dedicated Slack channel. No middlemen.', mockup: 'slack' },
-    { n: '3', tag: 'Delivery', h: 'Launch Fast', b: 'Design, build, and deploy. Most projects go live in under 48 hours.', mockup: 'deploy' },
-  ]
   return (
     <section className="process in-view" ref={ref as any}>
       <div className="container">
@@ -110,7 +111,7 @@ export function Process() {
           <p className="section-sub">From first call to launch, we keep things transparent and efficient.</p>
         </div>
         <div className="process-grid">
-          {steps.map(s => <ProcessCard key={s.n} step={s} />)}
+          {STEPS.map(s => <ProcessCard key={s.n} step={s} />)}
         </div>
       </div>
     </section>
@@ -192,12 +193,13 @@ function CapRow({ cap, statsRow }: { cap?: { num: string; label: string; h: stri
   )
 }
 
+const CAPS = [
+  { num: '01', label: 'WEB', h: 'Sites that ship in days, not months.', b: 'Next.js, React, TypeScript. SEO-first architecture. 99+ Lighthouse scores standard.', tags: ['Landing pages', 'SaaS', 'E-commerce', 'Web apps'], visual: 'web' },
+  { num: '02', label: 'DESIGN', h: 'Pixel-perfect interfaces.', b: 'From wireframes to polished UI. Design systems that scale.', tags: ['UI systems', 'Motion', 'Brand'], visual: 'design' },
+  { num: '03', label: 'iOS', h: 'Native Swift apps.', b: 'SwiftUI & UIKit. App Store ready. Widgets included.', tags: ['SwiftUI', 'UIKit', 'Widgets'], visual: 'ios' },
+]
+
 export function Capabilities() {
-  const caps = [
-    { num: '01', label: 'WEB', h: 'Sites that ship in days, not months.', b: 'Next.js, React, TypeScript. SEO-first architecture. 99+ Lighthouse scores standard.', tags: ['Landing pages', 'SaaS', 'E-commerce', 'Web apps'], visual: 'web' },
-    { num: '02', label: 'DESIGN', h: 'Pixel-perfect interfaces.', b: 'From wireframes to polished UI. Design systems that scale.', tags: ['UI systems', 'Motion', 'Brand'], visual: 'design' },
-    { num: '03', label: 'iOS', h: 'Native Swift apps.', b: 'SwiftUI & UIKit. App Store ready. Widgets included.', tags: ['SwiftUI', 'UIKit', 'Widgets'], visual: 'ios' },
-  ]
   return (
     <section className="capabilities">
       <div className="container">
@@ -206,7 +208,7 @@ export function Capabilities() {
           <h2 className="section-title">Three things.<br />Done exceptionally well.</h2>
         </div>
         <div className="cap-rows">
-          {caps.map(c => <CapRow key={c.num} cap={c} />)}
+          {CAPS.map(c => <CapRow key={c.num} cap={c} />)}
           <CapRow statsRow />
         </div>
       </div>
@@ -240,12 +242,13 @@ function PricingTierCard({ tier }: { tier: { name: string; desc: string; price: 
   )
 }
 
+const TIERS = [
+  { name: 'Starter', desc: 'Perfect for MVPs and landing pages', price: '$999', cadence: 'one-time', featured: false, features: ['Single landing page', 'Mobile responsive', 'Live in 48 hours', 'SEO optimized', '1 revision round'] },
+  { name: 'Professional', desc: 'Complete website solution', price: '$2,499', cadence: 'one-time', featured: true, features: ['Up to 5 pages', 'Custom design system', 'Live in 48 hours', 'Advanced SEO', 'Contact forms + CMS', '3 revision rounds', 'Performance optimization'] },
+  { name: 'Enterprise', desc: 'For complex projects', price: 'Custom', cadence: '', featured: false, features: ['Unlimited pages', 'Full app development', 'Custom timeline', 'API integrations', 'Dedicated support', 'Unlimited revisions'] },
+]
+
 export function Pricing() {
-  const tiers = [
-    { name: 'Starter', desc: 'Perfect for MVPs and landing pages', price: '$999', cadence: 'one-time', featured: false, features: ['Single landing page', 'Mobile responsive', 'Live in 48 hours', 'SEO optimized', '1 revision round'] },
-    { name: 'Professional', desc: 'Complete website solution', price: '$2,499', cadence: 'one-time', featured: true, features: ['Up to 5 pages', 'Custom design system', 'Live in 48 hours', 'Advanced SEO', 'Contact forms + CMS', '3 revision rounds', 'Performance optimization'] },
-    { name: 'Enterprise', desc: 'For complex projects', price: 'Custom', cadence: '', featured: false, features: ['Unlimited pages', 'Full app development', 'Custom timeline', 'API integrations', 'Dedicated support', 'Unlimited revisions'] },
-  ]
   return (
     <section className="pricing">
       <div className="container">
@@ -255,7 +258,7 @@ export function Pricing() {
           <p className="section-sub">One-time payment. You own everything. No recurring fees.</p>
         </div>
         <div className="pricing-grid">
-          {tiers.map(t => <PricingTierCard key={t.name} tier={t} />)}
+          {TIERS.map(t => <PricingTierCard key={t.name} tier={t} />)}
         </div>
         <div className="pricing-foot">
           <span>
@@ -270,22 +273,22 @@ export function Pricing() {
   )
 }
 
+const TESTIMONIALS = [
+  { q: 'The team was a total pleasure to work with. Attentive, efficient, and with a close eye for detail. Would highly recommend.', name: 'Baylee', role: 'A&R, Universal Music Group', initial: 'B' },
+  { q: 'Shipped our landing page in under a week. Lighthouse 100 across the board, and it looks better than anything we had before.', name: 'Marcus Chen', role: 'CTO, Amplitude', initial: 'M' },
+  { q: 'They understood the brief immediately and pushed back when it needed it. That kind of honesty is rare in an agency.', name: 'Sophie Wright', role: 'Founder, Fern Studio', initial: 'S' },
+  { q: 'Our iOS app went from sketch to App Store in 6 weeks. Clean code, zero drama.', name: 'Jordan Kim', role: 'Product Lead, Linear', initial: 'J' },
+  { q: "We've worked with a lot of studios. This is the first time the final product felt exactly like our vision.", name: 'Tomas Reyes', role: 'CEO, Flowstate', initial: 'T' },
+  { q: 'Fast, communicative, and opinionated in the best way. They told us what would work — and they were right.', name: 'Nia Osei', role: 'Head of Design, Vercel', initial: 'N' },
+]
+
 export function Testimonial() {
   const ref = useInView()
   const [active, setActive] = useState(0)
   const [fwd, setFwd] = useState(true)
 
-  const items = [
-    { q: 'The team was a total pleasure to work with. Attentive, efficient, and with a close eye for detail. Would highly recommend.', name: 'Baylee', role: 'A&R, Universal Music Group', initial: 'B' },
-    { q: 'Shipped our landing page in under a week. Lighthouse 100 across the board, and it looks better than anything we had before.', name: 'Marcus Chen', role: 'CTO, Amplitude', initial: 'M' },
-    { q: 'They understood the brief immediately and pushed back when it needed it. That kind of honesty is rare in an agency.', name: 'Sophie Wright', role: 'Founder, Fern Studio', initial: 'S' },
-    { q: 'Our iOS app went from sketch to App Store in 6 weeks. Clean code, zero drama.', name: 'Jordan Kim', role: 'Product Lead, Linear', initial: 'J' },
-    { q: "We've worked with a lot of studios. This is the first time the final product felt exactly like our vision.", name: 'Tomas Reyes', role: 'CEO, Flowstate', initial: 'T' },
-    { q: 'Fast, communicative, and opinionated in the best way. They told us what would work — and they were right.', name: 'Nia Osei', role: 'Head of Design, Vercel', initial: 'N' },
-  ]
-
   const go = (idx: number) => {
-    setFwd(idx > active || (active === items.length - 1 && idx === 0))
+    setFwd(idx > active || (active === TESTIMONIALS.length - 1 && idx === 0))
     setActive(idx)
   }
 
@@ -293,7 +296,7 @@ export function Testimonial() {
     <section className="testimonial">
       <div className="container" ref={ref as any} style={{ opacity: 0, transform: 'translateY(32px)' }}>
         <div className="testimonial-track">
-          {items.map((item, i) => (
+          {TESTIMONIALS.map((item, i) => (
             <div key={i} className={`testimonial-slide${i === active ? ` testimonial-slide--active ${fwd ? 'testimonial-slide--fwd' : 'testimonial-slide--bwd'}` : ''}`}>
               <blockquote className="testimonial-quote">&ldquo;{item.q}&rdquo;</blockquote>
               <div className="testimonial-author">
@@ -307,15 +310,15 @@ export function Testimonial() {
           ))}
         </div>
         <div className="testimonial-nav">
-          <button className="testimonial-arrow" onClick={() => go((active - 1 + items.length) % items.length)} aria-label="Previous">
+          <button className="testimonial-arrow" onClick={() => go((active - 1 + TESTIMONIALS.length) % TESTIMONIALS.length)} aria-label="Previous">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </button>
           <div className="testimonial-dots">
-            {items.map((_, i) => (
+            {TESTIMONIALS.map((_, i) => (
               <button key={i} className={`testimonial-dot${i === active ? ' testimonial-dot--active' : ''}`} onClick={() => go(i)} aria-label={`Testimonial ${i + 1}`} />
             ))}
           </div>
-          <button className="testimonial-arrow" onClick={() => go((active + 1) % items.length)} aria-label="Next">
+          <button className="testimonial-arrow" onClick={() => go((active + 1) % TESTIMONIALS.length)} aria-label="Next">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 2L10 7L5 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </button>
         </div>

@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 
 export function SiteFooter() {
@@ -6,14 +7,18 @@ export function SiteFooter() {
       <div className="container">
         <div className="footer-top">
           <div className="footer-brand">
-            <img
+            <Image
               src="/assets/logo-dark.png"
               alt="bitsandbytes."
+              width={119}
+              height={32}
               className="footer-mark-img footer-mark-img--dark"
             />
-            <img
+            <Image
               src="/assets/logo-light.png"
               alt="bitsandbytes."
+              width={119}
+              height={32}
               className="footer-mark-img footer-mark-img--light"
             />
             <div className="footer-tag">A studio that ships.<br />Brooklyn, NY · est. 2024</div>
