@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const NAV_ITEMS = [
   { num: '01', label: 'Index', href: '/' },
@@ -31,16 +31,14 @@ function MoonIcon() {
 
 export function SiteHeader() {
   const pathname = usePathname()
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark')
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    if (typeof document !== 'undefined') {
+      return (document.documentElement.dataset.theme as 'light' | 'dark') ?? 'dark'
+    }
+    return 'dark'
+  })
   const [iconFading, setIconFading] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-
-  useEffect(() => {
-    const saved = localStorage.getItem('theme') as 'light' | 'dark' | null
-    const initial = saved ?? 'dark'
-    setTheme(initial)
-    document.documentElement.dataset.theme = initial
-  }, [])
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
@@ -50,10 +48,12 @@ export function SiteHeader() {
   const toggleTheme = () => {
     setIconFading(true)
     setTimeout(() => {
-      const next = theme === 'light' ? 'dark' : 'light'
-      setTheme(next)
-      document.documentElement.dataset.theme = next
-      localStorage.setItem('theme', next)
+      setTheme(prev => {
+        const next = prev === 'light' ? 'dark' : 'light'
+        document.documentElement.dataset.theme = next
+        localStorage.setItem('theme', next)
+        return next
+      })
       setTimeout(() => setIconFading(false), 50)
     }, 180)
   }
@@ -63,12 +63,8 @@ export function SiteHeader() {
       <header className="site-header">
         <div className="container site-header-inner">
           <Link className="wordmark" href="/" onClick={() => setMenuOpen(false)}>
-            <img
-              src={theme === 'dark' ? '/assets/logo-dark.png' : '/assets/logo-light.png'}
-              alt="bitsandbytes."
-              className="wordmark-img"
-              style={{ height: 32, width: 'auto' }}
-            />
+            <img src="/assets/logo-dark.png" alt="bitsandbytes." className="wordmark-img wordmark-img--dark" style={{ height: 32, width: 'auto' }} />
+            <img src="/assets/logo-light.png" alt="" className="wordmark-img wordmark-img--light" style={{ height: 32, width: 'auto' }} aria-hidden="true" />
           </Link>
           <nav className="site-nav">
             {NAV_ITEMS.map((item) => (

@@ -3,6 +3,8 @@
 import Link from 'next/link'
 import { useEffect, useRef } from 'react'
 
+let didAnimate = false
+
 export function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
@@ -17,7 +19,7 @@ export function Hero() {
     const sub = subRef.current
     if (!title || !sub) return
 
-    if ((window as any).__heroAnimated) {
+    if (didAnimate) {
       title.innerHTML = 'Software solutions,<br>shipped fast.'
       while (sub.firstChild) sub.removeChild(sub.firstChild)
       const subSpan = document.createElement('span')
@@ -38,26 +40,33 @@ export function Hero() {
 
     const titlePart1 = 'Software solutions,'
     const titlePart2 = 'shipped fast.'
-    const subText = "Sites and apps, live in days. Great ideas shouldn’t wait."
+    const subText = "Sites and apps, live in days. Great ideas shouldn't wait."
 
     let phase = 0
     let charIndex = 0
+    let part1Span: HTMLSpanElement | null = null
+    let part2Span: HTMLSpanElement | null = null
     let subTextSpan: HTMLSpanElement | null = null
+    let tid: ReturnType<typeof setTimeout>
 
     const typeCharacter = () => {
       if (phase === 0 && charIndex < titlePart1.length) {
-        const span = title.querySelector('.part1') as HTMLSpanElement || (() => {
-          const s = document.createElement('span'); s.className = 'part1'; title.appendChild(s); return s
-        })()
-        span.textContent += titlePart1[charIndex++]
+        if (!part1Span) {
+          part1Span = document.createElement('span')
+          part1Span.className = 'part1'
+          title.appendChild(part1Span)
+        }
+        part1Span.textContent += titlePart1[charIndex++]
       } else if (phase === 0) {
         title.appendChild(document.createElement('br'))
         phase = 1; charIndex = 0
       } else if (phase === 1 && charIndex < titlePart2.length) {
-        const span = title.querySelector('.part2') as HTMLSpanElement || (() => {
-          const s = document.createElement('span'); s.className = 'part2'; title.appendChild(s); return s
-        })()
-        span.textContent += titlePart2[charIndex++]
+        if (!part2Span) {
+          part2Span = document.createElement('span')
+          part2Span.className = 'part2'
+          title.appendChild(part2Span)
+        }
+        part2Span.textContent += titlePart2[charIndex++]
       } else if (phase === 1) {
         phase = 2; charIndex = 0
         subTextSpan = document.createElement('span')
@@ -72,11 +81,11 @@ export function Hero() {
 
       const delay = phase === 2 ? 30 : 75
       if (phase < 2 || charIndex < subText.length) {
-        setTimeout(typeCharacter, delay)
+        tid = setTimeout(typeCharacter, delay)
       } else {
         let d = 200
         const show = (ref: React.RefObject<HTMLElement | null>, extra?: () => void) => {
-          setTimeout(() => {
+          tid = setTimeout(() => {
             ref.current?.classList.remove('fade-in-hidden')
             ref.current?.classList.add('fade-in-visible')
             extra?.()
@@ -85,11 +94,12 @@ export function Hero() {
         }
         show(pillRef)
         show(ctasRef)
-        show(statsRef, () => { (window as any).__heroAnimated = true })
+        show(statsRef, () => { didAnimate = true })
       }
     }
 
     typeCharacter()
+    return () => clearTimeout(tid)
   }, [])
 
   // Pixel grid canvas
@@ -98,6 +108,7 @@ export function Hero() {
     if (!canvas) return
     const ctx = canvas.getContext('2d')!
     let raf: number
+    let running = false
     let w = 0, h = 0, dpr = 1
     const dots: { x: number; y: number; base: number; amp: number; speed: number; phase: number; bright: boolean }[] = []
 
@@ -132,10 +143,32 @@ export function Hero() {
       raf = requestAnimationFrame(tick)
     }
 
+    const start = () => {
+      if (!running) { running = true; raf = requestAnimationFrame(tick) }
+    }
+    const stop = () => {
+      if (running) { running = false; cancelAnimationFrame(raf) }
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => { entry.isIntersecting ? start() : stop() },
+      { threshold: 0 }
+    )
+    observer.observe(canvas)
+
+    const onVisibility = () => {
+      document.hidden ? stop() : start()
+    }
+    document.addEventListener('visibilitychange', onVisibility)
+
     resize()
-    raf = requestAnimationFrame(tick)
-    window.addEventListener('resize', resize)
-    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize) }
+    window.addEventListener('resize', resize, { passive: true })
+    return () => {
+      stop()
+      observer.disconnect()
+      document.removeEventListener('visibilitychange', onVisibility)
+      window.removeEventListener('resize', resize)
+    }
   }, [])
 
   return (

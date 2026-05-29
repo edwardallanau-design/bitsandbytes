@@ -76,6 +76,8 @@
 .nav-num { color: var(--fg-3); }
 .nav-item.active .nav-num { color: var(--fg-2); }
 .wordmark-img { height: 22px; width: auto; display: block; }
+[data-theme='light'] .wordmark-img--dark  { display: none; }
+[data-theme='dark']  .wordmark-img--light { display: none; }
 @media (max-width: 720px) { .site-nav { display: none; } }
 
 /* ---------- Mobile nav drawer ---------- */
