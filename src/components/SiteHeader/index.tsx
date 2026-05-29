@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -63,8 +64,8 @@ export function SiteHeader() {
       <header className="site-header">
         <div className="container site-header-inner">
           <Link className="wordmark" href="/" onClick={() => setMenuOpen(false)}>
-            <img src="/assets/logo-dark.png" alt="bitsandbytes." className="wordmark-img wordmark-img--dark" style={{ height: 32, width: 'auto' }} />
-            <img src="/assets/logo-light.png" alt="" className="wordmark-img wordmark-img--light" style={{ height: 32, width: 'auto' }} aria-hidden="true" />
+            <Image src="/assets/logo-dark.png" alt="bitsandbytes." width={119} height={32} className="wordmark-img wordmark-img--dark" priority />
+            <Image src="/assets/logo-light.png" alt="" width={119} height={32} className="wordmark-img wordmark-img--light" priority aria-hidden={true} />
           </Link>
           <nav className="site-nav">
             {NAV_ITEMS.map((item) => (

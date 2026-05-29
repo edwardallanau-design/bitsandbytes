@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import React from 'react'
+import Script from 'next/script'
 import { SiteHeader } from '@/components/SiteHeader'
 import { SiteFooter } from '@/components/SiteFooter'
 import { PageTransition } from '@/components/PageTransition'
@@ -14,7 +15,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="/assets/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
       <body>
-        <script
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem('theme');document.documentElement.dataset.theme=t==='light'?'light':'dark';}catch(e){}})();`,
           }}
