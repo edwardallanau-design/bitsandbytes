@@ -54,6 +54,76 @@ export const TeamMembers: CollectionConfig = {
         description: 'Sort order (lower = first)',
       },
     },
+    {
+      name: 'background',
+      type: 'text',
+      admin: {
+        description: 'e.g. "Ex-Stripe, ex-Vercel." — shown as the first string property in the code snippet',
+      },
+    },
+    {
+      name: 'metricKey',
+      type: 'text',
+      admin: {
+        description: 'Property name for the numeric value (e.g. "years", "shipped"). Leave blank to omit.',
+      },
+    },
+    {
+      name: 'metricValue',
+      type: 'number',
+      admin: {
+        description: 'The numeric value for metricKey (e.g. 8, 12)',
+      },
+    },
+    {
+      name: 'itemsKey',
+      type: 'text',
+      admin: {
+        description: 'Property name for the primary array (e.g. "stack", "prev")',
+      },
+    },
+    {
+      name: 'items',
+      type: 'array',
+      admin: {
+        description: 'Values for the primary array property (e.g. TypeScript, React)',
+      },
+      fields: [
+        {
+          name: 'item',
+          type: 'text',
+          required: true,
+        },
+      ],
+    },
+    {
+      name: 'secondaryItemsKey',
+      type: 'text',
+      admin: {
+        description: 'Property name for an optional second array (e.g. "tools"). Leave blank to omit.',
+      },
+    },
+    {
+      name: 'secondaryItems',
+      type: 'array',
+      admin: {
+        description: 'Values for the secondary array property (e.g. Figma, Framer)',
+      },
+      fields: [
+        {
+          name: 'item',
+          type: 'text',
+          required: true,
+        },
+      ],
+    },
+    {
+      name: 'focus',
+      type: 'text',
+      admin: {
+        description: 'e.g. "Full-stack & infra" — shown as the last string property in the code snippet',
+      },
+    },
   ],
   timestamps: true,
 }

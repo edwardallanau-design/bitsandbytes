@@ -121,11 +121,13 @@ export interface Config {
     header: Header;
     footer: Footer;
     'site-settings': SiteSetting;
+    about: About;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    about: AboutSelect<false> | AboutSelect<true>;
   };
   locale: null;
   widgets: {
@@ -920,6 +922,48 @@ export interface TeamMember {
    * Sort order (lower = first)
    */
   order?: number | null;
+  /**
+   * e.g. "Ex-Stripe, ex-Vercel." — shown as the first string property in the code snippet
+   */
+  background?: string | null;
+  /**
+   * Property name for the numeric value (e.g. "years", "shipped"). Leave blank to omit.
+   */
+  metricKey?: string | null;
+  /**
+   * The numeric value for metricKey (e.g. 8, 12)
+   */
+  metricValue?: number | null;
+  /**
+   * Property name for the primary array (e.g. "stack", "prev")
+   */
+  itemsKey?: string | null;
+  /**
+   * Values for the primary array property (e.g. TypeScript, React)
+   */
+  items?:
+    | {
+        item: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Property name for an optional second array (e.g. "tools"). Leave blank to omit.
+   */
+  secondaryItemsKey?: string | null;
+  /**
+   * Values for the secondary array property (e.g. Figma, Framer)
+   */
+  secondaryItems?:
+    | {
+        item: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * e.g. "Full-stack & infra" — shown as the last string property in the code snippet
+   */
+  focus?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1583,6 +1627,24 @@ export interface TeamMembersSelect<T extends boolean = true> {
   bio?: T;
   avatar?: T;
   order?: T;
+  background?: T;
+  metricKey?: T;
+  metricValue?: T;
+  itemsKey?: T;
+  items?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  secondaryItemsKey?: T;
+  secondaryItems?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  focus?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1942,6 +2004,56 @@ export interface SiteSetting {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about".
+ */
+export interface About {
+  id: number;
+  /**
+   * First line of the <h1> (before the line break)
+   */
+  pageTitlePart1?: string | null;
+  /**
+   * Second line of the <h1> (after the line break)
+   */
+  pageTitlePart2?: string | null;
+  pageSubtitle?: string | null;
+  whoWeAreHeading?: string | null;
+  bio1?: string | null;
+  bio2?: string | null;
+  /**
+   * Pill badges shown under the bio paragraphs
+   */
+  tags?:
+    | {
+        tag: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Stat cards shown in the "By the numbers" column
+   */
+  stats?:
+    | {
+        /**
+         * e.g. "12+" or "48hr"
+         */
+        value: string;
+        /**
+         * e.g. "Years exp."
+         */
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Italic comment shown at the bottom of each team member code snippet
+   */
+  snippetComment?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -1997,6 +2109,35 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   aboutPillText?: T;
   contactEmail?: T;
   contactPhone?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about_select".
+ */
+export interface AboutSelect<T extends boolean = true> {
+  pageTitlePart1?: T;
+  pageTitlePart2?: T;
+  pageSubtitle?: T;
+  whoWeAreHeading?: T;
+  bio1?: T;
+  bio2?: T;
+  tags?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
+      };
+  stats?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  snippetComment?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
