@@ -76,7 +76,7 @@ export function Manifesto({ about, members }: ManifestoProps) {
     <section className="manifesto" id="about-us">
       <div className="container">
         <div className="about-grid">
-          <div className="about-col about-col--left">
+          <div className="about-col--intro">
             <h3 className="about-h">{about.whoWeAreHeading ?? 'Who we are'}</h3>
             {about.bio1 && <p className="about-b">{about.bio1}</p>}
             {about.bio2 && <p className="about-b">{about.bio2}</p>}
@@ -87,9 +87,25 @@ export function Manifesto({ about, members }: ManifestoProps) {
                 </span>
               ))}
             </div>
-            <h3 className="about-h" style={{ marginTop: 40 }}>
-              The team
-            </h3>
+          </div>
+          <div className="about-col--stats">
+            <h3 className="about-h">By the numbers</h3>
+            <div className="about-stats" ref={statsRef}>
+              {stats.map((s, i) => (
+                <div
+                  key={s.id ?? s.value}
+                  className={`about-stat${statsVisible[i] ? ' in-view' : ''}`}
+                  data-kind="stat"
+                  data-idx={i}
+                >
+                  <div className="about-stat-k">{s.value}</div>
+                  <div className="about-stat-v">{s.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <h3 className="about-h about-h--team">The team</h3>
+          <div className="about-col--team">
             <div className="about-team" ref={teamRef}>
               {members.map((member, i) => (
                 <div
@@ -103,22 +119,6 @@ export function Manifesto({ about, members }: ManifestoProps) {
                   <div className="team-avatar">{member.initials}</div>
                   <div className="team-name">{member.name}</div>
                   <div className="team-role">{member.role}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="about-col about-col--right">
-            <h3 className="about-h">By the numbers</h3>
-            <div className="about-stats" ref={statsRef}>
-              {stats.map((s, i) => (
-                <div
-                  key={s.id ?? s.value}
-                  className={`about-stat${statsVisible[i] ? ' in-view' : ''}`}
-                  data-kind="stat"
-                  data-idx={i}
-                >
-                  <div className="about-stat-k">{s.value}</div>
-                  <div className="about-stat-v">{s.label}</div>
                 </div>
               ))}
             </div>
