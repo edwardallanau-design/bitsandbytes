@@ -10,7 +10,7 @@ export const About: GlobalConfig = {
     update: authenticated,
   },
   admin: {
-    group: 'Site',
+    group: 'About',
   },
   hooks: {
     afterChange: [revalidateAbout],

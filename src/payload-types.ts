@@ -916,54 +916,29 @@ export interface TeamMember {
    * Two letters shown in avatar placeholder
    */
   initials?: string | null;
-  bio?: string | null;
+  /**
+   * Bio shown inside the code snippet on the About page (between the curly braces)
+   */
+  bio?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   avatar?: (number | null) | Media;
   /**
    * Sort order (lower = first)
    */
   order?: number | null;
-  /**
-   * e.g. "Ex-Stripe, ex-Vercel." — shown as the first string property in the code snippet
-   */
-  background?: string | null;
-  /**
-   * Property name for the numeric value (e.g. "years", "shipped"). Leave blank to omit.
-   */
-  metricKey?: string | null;
-  /**
-   * The numeric value for metricKey (e.g. 8, 12)
-   */
-  metricValue?: number | null;
-  /**
-   * Property name for the primary array (e.g. "stack", "prev")
-   */
-  itemsKey?: string | null;
-  /**
-   * Values for the primary array property (e.g. TypeScript, React)
-   */
-  items?:
-    | {
-        item: string;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Property name for an optional second array (e.g. "tools"). Leave blank to omit.
-   */
-  secondaryItemsKey?: string | null;
-  /**
-   * Values for the secondary array property (e.g. Figma, Framer)
-   */
-  secondaryItems?:
-    | {
-        item: string;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * e.g. "Full-stack & infra" — shown as the last string property in the code snippet
-   */
-  focus?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1627,24 +1602,6 @@ export interface TeamMembersSelect<T extends boolean = true> {
   bio?: T;
   avatar?: T;
   order?: T;
-  background?: T;
-  metricKey?: T;
-  metricValue?: T;
-  itemsKey?: T;
-  items?:
-    | T
-    | {
-        item?: T;
-        id?: T;
-      };
-  secondaryItemsKey?: T;
-  secondaryItems?:
-    | T
-    | {
-        item?: T;
-        id?: T;
-      };
-  focus?: T;
   updatedAt?: T;
   createdAt?: T;
 }

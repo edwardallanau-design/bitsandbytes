@@ -697,14 +697,15 @@
   font-size: 12px;
   line-height: 1.6;
   color: var(--fg-2);
-  white-space: pre;
-  overflow-x: auto;
 }
-.stack-code .kw { color: var(--fg-1); font-weight: 600; }
-.stack-code .vn { color: var(--fg-1); }
-.stack-code .pr { color: var(--fg-1); }
-.stack-code .st { color: var(--fg-2); }
-.stack-code .cm { color: var(--fg-3); font-style: italic; }
+.stack-bio-para {
+  margin: 8px 0;
+  padding: 0 20px;
+  color: var(--fg-2);
+}
+.stack-bio-para p { margin: 0 0 4px; }
+.stack-bio-para p:last-child { margin-bottom: 0; }
+.stack-comment { display: block; margin-top: 8px; color: var(--fg-3); font-style: italic; }
 @media (max-width: 900px) { .about-grid { grid-template-columns: 1fr; gap: 32px; } .about-team { grid-template-columns: 1fr; } .about-stats { grid-template-columns: 1fr 1fr; } }
 
 /* ---------- BookCall ---------- */

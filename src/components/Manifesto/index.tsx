@@ -1,94 +1,8 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { RichText } from '@payloadcms/richtext-lexical/react'
 import type { About, TeamMember } from '@/payload-types'
-
-type Token = { t: string; v: string }
-type Line = Token[]
-
-const colorMap: Record<string, string> = {
-  kw: 'var(--code-kw)', vn: 'var(--code-vn)', pr: 'var(--code-pr)',
-  st: 'var(--code-st)', nm: 'var(--code-st)', cm: 'var(--fg-3)',
-  pl: 'var(--fg-2)', sp: 'transparent',
-}
-
-function buildLines(member: TeamMember): Line[] {
-  const varName = member.name.toLowerCase()
-
-  type PropRow =
-    | { kind: 'str'; key: string; value: string }
-    | { kind: 'num'; key: string; value: number }
-    | { kind: 'arr'; key: string; items: string[] }
-
-  const rows: PropRow[] = []
-
-  if (member.background) {
-    rows.push({ kind: 'str', key: 'background', value: member.background })
-  }
-  if (member.metricKey && member.metricValue != null) {
-    rows.push({ kind: 'num', key: member.metricKey, value: member.metricValue })
-  }
-  if (member.itemsKey && member.items && member.items.length > 0) {
-    rows.push({ kind: 'arr', key: member.itemsKey, items: member.items.map((i) => i.item) })
-  }
-  if (member.secondaryItemsKey && member.secondaryItems && member.secondaryItems.length > 0) {
-    rows.push({ kind: 'arr', key: member.secondaryItemsKey, items: member.secondaryItems.map((i) => i.item) })
-  }
-  if (member.focus) {
-    rows.push({ kind: 'str', key: 'focus', value: member.focus })
-  }
-
-  const maxKeyLen = rows.length > 0 ? Math.max(...rows.map((r) => r.key.length)) : 0
-  // Padding goes in the separator so property names stay clean
-  const makeSep = (key: string) => ': ' + ' '.repeat(maxKeyLen - key.length)
-
-  const lines: Line[] = []
-
-  lines.push([
-    { t: 'kw', v: 'const ' },
-    { t: 'vn', v: varName },
-    { t: 'pl', v: ' = {' },
-  ])
-
-  rows.forEach((row, idx) => {
-    const isLast = idx === rows.length - 1
-
-    if (row.kind === 'str') {
-      lines.push([
-        { t: 'sp', v: '  ' },
-        { t: 'pr', v: row.key },
-        { t: 'pl', v: makeSep(row.key) },
-        { t: 'st', v: `"${row.value}"` },
-        ...(isLast ? [] : [{ t: 'pl', v: ',' } as Token]),
-      ])
-    } else if (row.kind === 'num') {
-      lines.push([
-        { t: 'sp', v: '  ' },
-        { t: 'pr', v: row.key },
-        { t: 'pl', v: makeSep(row.key) },
-        { t: 'nm', v: String(row.value) },
-        ...(isLast ? [] : [{ t: 'pl', v: ',' } as Token]),
-      ])
-    } else {
-      const itemTokens: Token[] = []
-      row.items.forEach((item, ii) => {
-        itemTokens.push({ t: 'st', v: `"${item}"` })
-        if (ii < row.items.length - 1) itemTokens.push({ t: 'pl', v: ', ' })
-      })
-      lines.push([
-        { t: 'sp', v: '  ' },
-        { t: 'pr', v: row.key },
-        { t: 'pl', v: makeSep(row.key) + '[' },
-        ...itemTokens,
-        { t: 'pl', v: isLast ? ']' : '],' },
-      ])
-    }
-  })
-
-  lines.push([{ t: 'pl', v: '}' }])
-
-  return lines
-}
 
 type ManifestoProps = {
   about: About
@@ -156,7 +70,6 @@ export function Manifesto({ about, members }: ManifestoProps) {
   }, [])
 
   const m = members[selected]
-  const lines = m ? buildLines(m) : []
   const stats = about.stats ?? []
 
   return (
@@ -215,25 +128,24 @@ export function Manifesto({ about, members }: ManifestoProps) {
                   <span>team.bios.ts</span>
                   <span className="stack-tag">{m.name.toLowerCase()}.ts</span>
                 </div>
-                <pre
+                <div
                   className="stack-code"
                   key={selected}
                   style={{ animation: 'bioFadeIn 0.25s ease-out' }}
                 >
-                  {lines.map((line, li) => (
-                    <div key={li} className="bio-line">
-                      {line.map((p, pi) => (
-                        <span key={pi} style={{ color: colorMap[p.t] }}>
-                          {p.v}
-                        </span>
-                      ))}
-                    </div>
-                  ))}
-                  {'\n'}
-                  <span style={{ color: 'var(--fg-3)', fontStyle: 'italic' }}>
+                  <div className="bio-line">
+                    <span style={{ color: 'var(--fg-1)', fontWeight: 600 }}>const </span>
+                    <span style={{ color: 'var(--fg-1)' }}>{m.name.toLowerCase()}</span>
+                    <span style={{ color: 'var(--fg-2)' }}>{' = {'}</span>
+                  </div>
+                  {m.bio && <RichText data={m.bio} className="stack-bio-para" />}
+                  <div className="bio-line">
+                    <span style={{ color: 'var(--fg-2)' }}>{'}'}</span>
+                  </div>
+                  <span className="stack-comment">
                     {about.snippetComment ?? '// Senior-only. No juniors, no agencies.'}
                   </span>
-                </pre>
+                </div>
               </div>
             )}
           </div>
