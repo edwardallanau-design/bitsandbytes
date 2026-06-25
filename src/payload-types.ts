@@ -121,11 +121,13 @@ export interface Config {
     header: Header;
     footer: Footer;
     'site-settings': SiteSetting;
+    about: About;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    about: AboutSelect<false> | AboutSelect<true>;
   };
   locale: null;
   widgets: {
@@ -914,7 +916,24 @@ export interface TeamMember {
    * Two letters shown in avatar placeholder
    */
   initials?: string | null;
-  bio?: string | null;
+  /**
+   * Bio shown inside the code snippet on the About page (between the curly braces)
+   */
+  bio?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   avatar?: (number | null) | Media;
   /**
    * Sort order (lower = first)
@@ -1942,6 +1961,56 @@ export interface SiteSetting {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about".
+ */
+export interface About {
+  id: number;
+  /**
+   * First line of the <h1> (before the line break)
+   */
+  pageTitlePart1?: string | null;
+  /**
+   * Second line of the <h1> (after the line break)
+   */
+  pageTitlePart2?: string | null;
+  pageSubtitle?: string | null;
+  whoWeAreHeading?: string | null;
+  bio1?: string | null;
+  bio2?: string | null;
+  /**
+   * Pill badges shown under the bio paragraphs
+   */
+  tags?:
+    | {
+        tag: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Stat cards shown in the "By the numbers" column
+   */
+  stats?:
+    | {
+        /**
+         * e.g. "12+" or "48hr"
+         */
+        value: string;
+        /**
+         * e.g. "Years exp."
+         */
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Italic comment shown at the bottom of each team member code snippet
+   */
+  snippetComment?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -1997,6 +2066,35 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   aboutPillText?: T;
   contactEmail?: T;
   contactPhone?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about_select".
+ */
+export interface AboutSelect<T extends boolean = true> {
+  pageTitlePart1?: T;
+  pageTitlePart2?: T;
+  pageSubtitle?: T;
+  whoWeAreHeading?: T;
+  bio1?: T;
+  bio2?: T;
+  tags?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
+      };
+  stats?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  snippetComment?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

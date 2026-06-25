@@ -1,5 +1,12 @@
 import type { CollectionConfig } from 'payload'
 
+import {
+  BoldFeature,
+  ItalicFeature,
+  lexicalEditor,
+  ParagraphFeature,
+  UnderlineFeature,
+} from '@payloadcms/richtext-lexical'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 
@@ -14,6 +21,7 @@ export const TeamMembers: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'role', 'order', 'updatedAt'],
+    group: 'About',
   },
   fields: [
     {
@@ -39,7 +47,13 @@ export const TeamMembers: CollectionConfig = {
     },
     {
       name: 'bio',
-      type: 'textarea',
+      type: 'richText',
+      editor: lexicalEditor({
+        features: [ParagraphFeature(), BoldFeature(), ItalicFeature(), UnderlineFeature()],
+      }),
+      admin: {
+        description: 'Bio shown inside the code snippet on the About page (between the curly braces)',
+      },
     },
     {
       name: 'avatar',

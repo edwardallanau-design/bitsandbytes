@@ -15,6 +15,7 @@ import { PricingTiers } from './collections/PricingTiers'
 import { TeamMembers } from './collections/TeamMembers'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
+import { About } from './globals/About'
 import { SiteSettings } from './globals/SiteSettings'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
@@ -69,7 +70,7 @@ export default buildConfig({
   }),
   collections: [Pages, Posts, Media, Categories, Users, Projects, Testimonials, PricingTiers, TeamMembers],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer, SiteSettings],
+  globals: [Header, Footer, SiteSettings, About],
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,
