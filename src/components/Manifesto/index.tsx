@@ -76,7 +76,7 @@ export function Manifesto({ about, members }: ManifestoProps) {
     <section className="manifesto" id="about-us">
       <div className="container">
         <div className="about-grid">
-          <div className="about-col">
+          <div className="about-col about-col--left">
             <h3 className="about-h">{about.whoWeAreHeading ?? 'Who we are'}</h3>
             {about.bio1 && <p className="about-b">{about.bio1}</p>}
             {about.bio2 && <p className="about-b">{about.bio2}</p>}
@@ -107,7 +107,7 @@ export function Manifesto({ about, members }: ManifestoProps) {
               ))}
             </div>
           </div>
-          <div className="about-col">
+          <div className="about-col about-col--right">
             <h3 className="about-h">By the numbers</h3>
             <div className="about-stats" ref={statsRef}>
               {stats.map((s, i) => (
@@ -122,33 +122,33 @@ export function Manifesto({ about, members }: ManifestoProps) {
                 </div>
               ))}
             </div>
-            {m && (
-              <div className="stack-snippet">
-                <div className="stack-head">
-                  <span>team.bios.ts</span>
-                  <span className="stack-tag">{m.name.toLowerCase()}.ts</span>
-                </div>
-                <div
-                  className="stack-code"
-                  key={selected}
-                  style={{ animation: 'bioFadeIn 0.25s ease-out' }}
-                >
-                  <div className="bio-line">
-                    <span style={{ color: 'var(--fg-1)', fontWeight: 600 }}>const </span>
-                    <span style={{ color: 'var(--fg-1)' }}>{m.name.toLowerCase()}</span>
-                    <span style={{ color: 'var(--fg-2)' }}>{' = {'}</span>
-                  </div>
-                  {m.bio && <RichText data={m.bio} className="stack-bio-para" />}
-                  <div className="bio-line">
-                    <span style={{ color: 'var(--fg-2)' }}>{'}'}</span>
-                  </div>
-                  <span className="stack-comment">
-                    {about.snippetComment ?? '// Senior-only. No juniors, no agencies.'}
-                  </span>
-                </div>
-              </div>
-            )}
           </div>
+          {m && (
+            <div className="stack-snippet">
+              <div className="stack-head">
+                <span>team.bios.ts</span>
+                <span className="stack-tag">{m.name.toLowerCase()}.ts</span>
+              </div>
+              <div
+                className="stack-code"
+                key={selected}
+                style={{ animation: 'bioFadeIn 0.25s ease-out' }}
+              >
+                <div className="bio-line">
+                  <span style={{ color: 'var(--fg-1)', fontWeight: 600 }}>const </span>
+                  <span style={{ color: 'var(--fg-1)' }}>{m.name.toLowerCase()}</span>
+                  <span style={{ color: 'var(--fg-2)' }}>{' = {'}</span>
+                </div>
+                {m.bio && <RichText data={m.bio} className="stack-bio-para" />}
+                <div className="bio-line">
+                  <span style={{ color: 'var(--fg-2)' }}>{'}'}</span>
+                </div>
+                <span className="stack-comment">
+                  {about.snippetComment ?? '// Senior-only. No juniors, no agencies.'}
+                </span>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </section>
